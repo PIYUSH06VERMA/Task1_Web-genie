@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <title>AllInOne.com</title>
+</head>
+<body>
+    <div class="fade">
+        <h1>WELCOME!<br> Your <abbr title="ALL IN ONE">AIO</abbr> place to book everything.</h1>
+    </div>
+    <div class="main_content">
+         <h3>
+            Planning a romantic date night, a family celebration, or a spontaneous getaway? <br>Whether you're booking movie tickets, reserving a train seat, catching a flight, or hopping on a bus, we've got you covered. <br>Explore, book, and embark on your next adventure—all in one place!
+         </h3>
+             <div class="tab_buttons">
+        <button class="tab_btn active" data-target="movie">Movie</button>
+        <button class="tab_btn" data-target="restaurant">Restaurant</button>
+        <button class="tab_btn" data-target="bus">Bus</button>
+        <button class="tab_btn" data-target="train">Train</button>
+        <button class="tab_btn" data-target="flight">Flight</button>
+    </div>
+    <div class="tab_container">
+
+
+        <div class="tab_content" id="movie">
+    <h2 style="font-family: cursive;color: gold;">Movie Booking</h2>
+    <p>Available Economic Tickets: <span id="movie_econ">100</span><br>
+       Available Silver Tickets: <span id="movie_silver">50</span><br>
+       Available Gold Tickets: <span id="movie_gold">12</span></p>
+       
+    <label for="movie_category">Select Ticket Type:</label>
+    <select id="movie_category">
+        <option value="econ">Economic</option>
+        <option value="silver">Silver</option>
+        <option value="gold">Gold</option>
+    </select>
+    
+    <button onclick="bookMovie()">Book</button>
+    <p id="movie_result" style="color: green; margin-top: 10px;"></p>
+</div>
+    
+
+    <div class="tab_content" id="restaurant" style="display: none;">
+        <h2 style="font-family: cursive;color: gold;">Restaurant Booking</h2>
+        <p>Available Two seater Tables: <span id="restaurant_twoSeater"></span>25<br> Available Four seater tables: <span id="restaurant_fourSeater"></span>15<br>
+             Available premium lounge: <b>OOPS!</b> Not avaiable</p>
+            <label for="restaurant_category">Select Ticket Type:</label>
+    <select id="restaurant_category">
+        <option value="twoSeater">2 Seater</option>
+        <option value="fourSeater">4 seater</option>
+        
+    </select>
+    
+    <button onclick="bookRestraurent()">Book</button>
+    <p id="restaurent_result" style="color: green; margin-top: 10px;"></p>
+    </div>
+
+    <div class="tab_content" id="bus" style="display: none;">
+                 <h2 style="font-family: cursive;color: gold;">Bus Booking</h2>
+    <p>Available Economic Tickets: <span id="bus_econ">40</span><br>
+       Available Sleeper Tickets: <span id="bus_sleeper">10</span><br>
+       
+    <label for="bus_category">Select Ticket Type:</label>
+    <select id="bus_category">
+        <option value="econ">Economic</option>
+        <option value="sleeper">sleeper</option>
+        
+    </select>
+    
+    <button onclick="bookBus()">Book</button>
+    <p id="bus_result" style="color: green; margin-top: 10px;"></p>
+    </div>
+
+    <div class="tab_content" id="train" style="display: none;">
+        <h2 style="font-family: cursive;color: gold;">Train Booking</h2>
+        <p>Available General Seats: <span id="train_gen">73</span> <br>
+             Available Sleeper Seats: <span id="train_sleeper">50</span><br>
+              Available 3rd class Tickets: <span id="train_class3">45</span><br>
+               Avaiable 2nd class Seats: <span id="train_class2">30</span><br>
+                Avaiable 1st class seats: <span id="train_class1">10</span></p>
+                    <label for="train_category">Select Ticket Type:</label>
+    <select id="train_category">
+        <option value="gen">general</option>
+        <option value="sleeper">Sleeper</option>
+        <option value="class3">3rd Class</option>
+        <option value="class2">2nd Class</option>
+        <option value="class1">1st Class</option>
+    </select>
+
+        <button onclick="bookTrain()">Book</button>
+    <p id="train_result" style="color: green; margin-top: 10px;"></p>
+</div>
+    
+
+    <div class="tab_content" id="flight" style="display: none;">
+         <h2 style="font-family: cursive;color: gold;">Flight Booking</h2>
+    <p>Available Economic Tickets: <span id="flight_econ">40</span><br>
+       Available Buisness Tickets: <span id="flight_bui">22</span><br>
+       
+    <label for="flight_category">Select Ticket Type:</label>
+    <select id="flight_category">
+        <option value="econ">Economic</option>
+        <option value="bui">Buisness</option>
+        
+    </select>
+    
+    <button onclick="bookFlight()">Book</button>
+    <p id="flight_result" style="color: green; margin-top: 10px;"></p>
+    </div>
+    </div>
+    </div>
+</div>
+
+    </div>
+    
+<script>
+    const buttons = document.querySelectorAll('.tab_btn');
+    const contents = document.querySelectorAll('.tab_content');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active from all buttons
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Hide all content sections
+            contents.forEach(content => content.style.display = 'none');
+
+            // Activate clicked button
+            button.classList.add('active');
+
+            // Show matching content
+            const target = button.getAttribute('data-target');
+            document.getElementById(target).style.display = 'block';
+        });
+    });
+
+    let movieTickets = {
+    econ: 100,
+    silver: 50,
+    gold: 12
+};
+
+function bookMovie() {
+    const category = document.getElementById("movie_category").value;
+
+    if (movieTickets[category] > 0) {
+        movieTickets[category]--;
+
+        document.getElementById(`movie_${category}`).innerText = movieTickets[category];
+        document.getElementById("movie_result").innerText =
+            `✅ Booking confirmed for ${category.charAt(0).toUpperCase() + category.slice(1)} ticket. Enjoy the show!`;
+    } else {
+        document.getElementById("movie_result").innerText =
+            `❌ Sorry, no ${category} tickets available.`;
+    }
+}
+     let trainTickets={
+        gen: 73,
+        sleeper: 50,
+        class3: 45,
+        class2: 30,
+        class1: 10
+     };
+
+     function bookTrain()
+     {
+            const category = document.getElementById("train_category").value;
+
+    if (trainTickets[category] > 0) {
+        trainTickets[category]--;
+
+        document.getElementById(`train_${category}`).innerText = trainTickets[category];
+        document.getElementById("train_result").innerText =
+            `✅ Booking confirmed for ${category.charAt(0).toUpperCase() + category.slice(1)} ticket. Enjoy the train ride!`;
+    } else {
+        document.getElementById("train_result").innerText =
+            `❌ Sorry, no ${category} tickets available.`;
+    }
+
+     }
+     let flightTickets={
+        econ: 40,
+        bui: 22
+     };
+     function bookFlight(){
+         const category = document.getElementById("flight_category").value;
+
+    if (flightTickets[category] > 0) {
+        flightTickets[category]--;
+
+        document.getElementById(`flight_${category}`).innerText = flightTickets[category];
+        document.getElementById("flight_result").innerText =
+            `✅ Booking confirmed for ${category.charAt(0).toUpperCase() + category.slice(1)} ticket. Enjoy the flight!`;
+    } else {
+        document.getElementById("flight_result").innerText =
+            `❌ Sorry, no ${category} tickets available.`;
+    }
+
+     }
+     let busTickets={
+        econ: 40,
+        sleeper: 10
+     };
+     function bookBus(){
+         const category = document.getElementById("bus_category").value;
+
+    if (busTickets[category] > 0) {
+        busTickets[category]--;
+
+        document.getElementById(`bus_${category}`).innerText = busTickets[category];
+        document.getElementById("bus_result").innerText =
+            `✅ Booking confirmed for ${category.charAt(0).toUpperCase() + category.slice(1)} ticket. Enjoy the Bus ride!`;
+    } else {
+        document.getElementById("bus_result").innerText =
+            `❌ Sorry, no ${category} tickets available.`;
+    }
+
+     }
+          let restaurantTickets={
+        twoSeater: 25,
+        fourSeater: 15
+     };
+     function bookRestraurent(){
+         const category = document.getElementById("restaurant_category").value;
+
+    if (restaurantTickets[category] > 0) {
+        restaurantTickets[category]--;
+
+        document.getElementById(`Restaurant_${category}`).innerText = restaurantTickets[category];
+        document.getElementById("restaurent_result").innerText =
+            `✅ Booking confirmed for ${category.charAt(0).toUpperCase() + category.slice(1)} ticket. Enjoy the food!`;
+    } else {
+        document.getElementById("restaurent_result").innerText =
+            `❌ Sorry, no ${category} tickets available.`;
+    }
+
+     }
+
+</script>    
+</body>
+</html>
